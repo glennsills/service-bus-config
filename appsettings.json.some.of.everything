@@ -1,0 +1,51 @@
+{
+    "ServiceBusConfiguration": {
+        "ServiceBusConnection": "Use User Secrets or Environmental Variable or Key Vault",
+        "Queues": [
+            {
+                "Name":"hackathon-queue1",
+                "LockDurationInSeconds": 45,
+                "MaxDeliveryCount": 8,
+                "MaxSizeInMegabytes":2048,
+                "DaysUntilAutoDelete": 5,
+                "DeadLetteringEnabled":false
+            },
+            {
+                "Name":"hackathon-queue2"
+            },
+            {
+                "Name":"hackathon-queue3"
+            }
+        ],
+        "Topics": [
+            {
+                "Name": "hackathon-topic-1",
+                "Subscriptions": [
+                    {
+                        "Name":"hackathon-topic-1-subscription-1"
+                    }
+                ]
+            },            
+            {
+                "Name": "hackathon-topic-2",
+                "Subscriptions": [
+                    {
+                        "Name":"hackathon-topic-2-subscription-2"
+                    }
+                ]
+
+            },
+            {
+                "Name": "hackathon-topic-3",
+                "Subscriptions": [
+                    {
+                        "Name":"hackathon-topic-3-subscription-1"
+                    },
+                    {
+                        "Name":"hackathon-topic-3-subscription-2"
+                    }
+                ]
+            }
+        ]
+    }
+}

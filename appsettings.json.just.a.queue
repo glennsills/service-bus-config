@@ -1,0 +1,15 @@
+{
+    "ServiceBusConfiguration": {
+        "ServiceBusConnection": "Use User Secrets or Environmental Variable or Key Vault",
+        "Queues": [
+            {
+                "Name":"hackathon-queue1",
+                "LockDurationInSeconds": 45,
+                "MaxDeliveryCount": 5,
+                "MaxSizeInMegabytes":2048,
+                "DaysUntilAutoDelete": 5,
+                "DeadLetteringEnabled":true
+            }
+        ]
+    }
+}
