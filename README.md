@@ -14,3 +14,4 @@ Fiddling around with initializing service bus queues, topics and subscriptions
 - 
 
 ## Questions
+- I am only suporting SQL subscription rules right now. Is that okay?

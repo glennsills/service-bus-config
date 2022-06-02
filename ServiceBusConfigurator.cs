@@ -58,7 +58,6 @@ namespace SbConfiguration
                     {
                     
                     };
-                    //await _adminClient.CreateSubscriptionAsync(topic.Name, subscription.Name);
                     await _adminClient.CreateSubscriptionAsync(subscriptionOptions, createRuleOptions );
                 }
             }
