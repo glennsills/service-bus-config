@@ -48,7 +48,18 @@ namespace SbConfiguration
             {
                 if (!await _adminClient.SubscriptionExistsAsync(topic.Name, subscription.Name))
                 {
+                    // var createRuleOptions = new CreateRuleOptions()
+                    // {
+                    //     Name = subscription.DefaultRule.Name,
+                    //     Filter =new SqlRuleFilter(subscription.DefaultRule.Filter)
+                    // };
+
+                    // var subscriptionOptions = new CreateSubscriptionOptions(topic.Name, subscription.Name)
+                    // {
+                    
+                    // };
                     await _adminClient.CreateSubscriptionAsync(topic.Name, subscription.Name);
+                    //await _adminClient.CreateSubscriptionAsync(subscriptionOptions, createRuleOptions );
                 }
             }
         }
