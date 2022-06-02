@@ -48,18 +48,18 @@ namespace SbConfiguration
             {
                 if (!await _adminClient.SubscriptionExistsAsync(topic.Name, subscription.Name))
                 {
-                    // var createRuleOptions = new CreateRuleOptions()
-                    // {
-                    //     Name = subscription.DefaultRule.Name,
-                    //     Filter =new SqlRuleFilter(subscription.DefaultRule.Filter)
-                    // };
+                    var createRuleOptions = new CreateRuleOptions()
+                    {
+                        Name = subscription.DefaultRule.Name,
+                        Filter =new SqlRuleFilter(subscription.DefaultRule.Filter)
+                    };
 
-                    // var subscriptionOptions = new CreateSubscriptionOptions(topic.Name, subscription.Name)
-                    // {
+                    var subscriptionOptions = new CreateSubscriptionOptions(topic.Name, subscription.Name)
+                    {
                     
-                    // };
-                    await _adminClient.CreateSubscriptionAsync(topic.Name, subscription.Name);
-                    //await _adminClient.CreateSubscriptionAsync(subscriptionOptions, createRuleOptions );
+                    };
+                    //await _adminClient.CreateSubscriptionAsync(topic.Name, subscription.Name);
+                    await _adminClient.CreateSubscriptionAsync(subscriptionOptions, createRuleOptions );
                 }
             }
         }
@@ -80,7 +80,7 @@ namespace SbConfiguration
             var createQueueOptions = new CreateQueueOptions(queue.Name)
             {
                 DefaultMessageTimeToLive = TimeSpan.FromDays(queue.DaysUntilAutoDelete),
-                LockDuration = TimeSpan.FromSeconds(queue.LockDurationInSeconds),
+                LockDuration = TimeSpan.FromSeconds(queue.MessageLockDurationInSeconds),
                 MaxDeliveryCount = queue.MaxDeliveryCount,
                 AutoDeleteOnIdle = TimeSpan.FromDays(queue.DaysUntilAutoDelete),
                 DeadLetteringOnMessageExpiration = queue.DeadLetteringEnabled,

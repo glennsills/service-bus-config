@@ -1,7 +1,6 @@
 namespace SbConfiguration;
 
-public class Subscription
+public class Subscription : BaseQueue
 {
-    public string Name {get;set;} = string.Empty;
-    public Rule DefaultRule {get;set;} 
+    public Rule DefaultRule {get;set;} = new Rule();
 }
