@@ -7,7 +7,6 @@ public class BaseQueue
     public int MessageTimeToLiveInDays {get;set;} = 365;
     public int MessageLockDurationInSeconds { get; set; } = 15;    
     public int DaysUntilAutoDelete { get; set; } = 10;
-    public int MaxSizeInMegabytes { get; set; } = 2048;
     public bool DeadLetteringEnabled { get; set; } = false;
     public bool SessionsEnabled {get;set;} = false;
     public bool MessageForwardingEnabled {get;set;} = false;

@@ -1,3 +1,4 @@
+using Azure.Messaging.ServiceBus;
 using Azure.Messaging.ServiceBus.Administration;
 
 namespace SbConfiguration
@@ -36,10 +37,19 @@ namespace SbConfiguration
         {
             var createTopicOptions = new CreateTopicOptions(topic.Name)
             {
+                DefaultMessageTimeToLive = TimeSpan.FromDays(topic.DaysUntilAutoDelete),
                 AutoDeleteOnIdle = TimeSpan.FromDays(topic.DaysUntilAutoDelete),
                 MaxSizeInMegabytes = topic.MaxSizeInMegabytes
             };
-            await _adminClient.CreateTopicAsync(createTopicOptions);
+            try
+            {
+                await _adminClient.CreateTopicAsync(createTopicOptions);
+            }
+            catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists)
+            {
+                //intentionally eat this exception which is almost certainly due to 
+                //a race condition where another process has created this topic first.
+            }
         }
 
         internal async Task CreateSubscriptionsForTopic(Topic topic)
@@ -51,14 +61,27 @@ namespace SbConfiguration
                     var createRuleOptions = new CreateRuleOptions()
                     {
                         Name = subscription.DefaultRule.Name,
-                        Filter =new SqlRuleFilter(subscription.DefaultRule.Filter)
+                        Filter = new SqlRuleFilter(subscription.DefaultRule.Filter)
                     };
 
                     var subscriptionOptions = new CreateSubscriptionOptions(topic.Name, subscription.Name)
                     {
-                    
+                        DefaultMessageTimeToLive = TimeSpan.FromDays(subscription.DaysUntilAutoDelete),
+                        LockDuration = TimeSpan.FromSeconds(subscription.MessageLockDurationInSeconds),
+                        MaxDeliveryCount = subscription.MaxDeliveryCount,
+                        AutoDeleteOnIdle = TimeSpan.FromDays(subscription.DaysUntilAutoDelete),
+                        DeadLetteringOnMessageExpiration = subscription.DeadLetteringEnabled
                     };
-                    await _adminClient.CreateSubscriptionAsync(subscriptionOptions, createRuleOptions );
+                    try
+                    {
+                        await _adminClient.CreateSubscriptionAsync(subscriptionOptions, createRuleOptions);
+                    }
+                    catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists)
+                    {
+                        //intentionally eat this exception which is almost certainly due to 
+                        //a race condition where another process has created this topic first.
+                    }
+
                 }
             }
         }
@@ -85,7 +108,15 @@ namespace SbConfiguration
                 DeadLetteringOnMessageExpiration = queue.DeadLetteringEnabled,
                 MaxSizeInMegabytes = queue.MaxSizeInMegabytes
             };
-            await _adminClient.CreateQueueAsync(createQueueOptions);
+            try
+            {
+                await _adminClient.CreateQueueAsync(createQueueOptions);
+            }
+            catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists)
+            {
+                //intentionally eat this exception which is almost certainly due to 
+                //a race condition where another process has reated this queue first.
+            }
         }
     }
 }
