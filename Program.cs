@@ -1,4 +1,5 @@
 ﻿using Azure.Messaging.ServiceBus.Administration;
+
 using Microsoft.Extensions.Configuration;
 
 namespace SbConfiguration;
@@ -18,12 +19,11 @@ class Program
         var config = configurationBuilder.Build();
 
         ServiceBusConfiguration serviceBusConfig = config.GetRequiredSection("ServiceBusConfiguration").Get<ServiceBusConfiguration>();
-        
+
         var adminClient = new ServiceBusAdministrationClient(serviceBusConfig.ServiceBusConnection);
-        
+
         var configurator = new ServiceBusConfigurator(adminClient, serviceBusConfig);
-        
+
         await configurator.AssureAllQueuesAndTopics();
     }
 }
-

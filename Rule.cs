@@ -2,8 +2,8 @@ namespace SbConfiguration
 {
     public class Rule
     {
-        public string Name {get;set;} = "$Default";
-        public string Filter {get;set;} = "1=1";
-        
+        public string Name { get; set; } = "$Default";
+        public string Filter { get; set; } = "1=1";
+
     }
 }
