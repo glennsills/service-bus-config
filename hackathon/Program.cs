@@ -1,24 +1,22 @@
 ﻿using Azure.Messaging.ServiceBus.Administration;
-
 using Microsoft.Extensions.Configuration;
+
 
 namespace SbConfiguration;
 class Program
 {
     static async Task Main(string[] args)
     {
+		var configurationManager = new ConfigurationManager();
 
-        var configurationBuilder = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json");
+        configurationManager.AddJsonFile("appsettings.json");
 
         if (Environment.GetEnvironmentVariable("Environment") == "Develop")
         {
-            configurationBuilder.AddUserSecrets<Program>();
+            configurationManager.AddUserSecrets<Program>();
         }
 
-        var config = configurationBuilder.Build();
-
-        ServiceBusConfiguration serviceBusConfig = config.GetRequiredSection("ServiceBusConfiguration").Get<ServiceBusConfiguration>();
+        ServiceBusConfiguration serviceBusConfig = configurationManager.GetRequiredSection("ServiceBusConfiguration").Get<ServiceBusConfiguration>();
 
         var adminClient = new ServiceBusAdministrationClient(serviceBusConfig.ServiceBusConnection);
 
