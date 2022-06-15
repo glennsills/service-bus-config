@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueTopicComposer", "queue
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QueueTopicComposer.Tests", "QueueTopicComposer.Tests\QueueTopicComposer.Tests.csproj", "{356CC41D-459C-49EA-A667-0AF72F34DC0A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProgram", "TestProgram\TestProgram.csproj", "{3945295A-6C1D-4995-9A74-25ADC0BBF4CD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{356CC41D-459C-49EA-A667-0AF72F34DC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{356CC41D-459C-49EA-A667-0AF72F34DC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{356CC41D-459C-49EA-A667-0AF72F34DC0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3945295A-6C1D-4995-9A74-25ADC0BBF4CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3945295A-6C1D-4995-9A74-25ADC0BBF4CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3945295A-6C1D-4995-9A74-25ADC0BBF4CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3945295A-6C1D-4995-9A74-25ADC0BBF4CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
