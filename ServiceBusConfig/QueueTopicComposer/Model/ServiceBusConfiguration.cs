@@ -1,3 +1,5 @@
+using QueueTopicComposer.Model;
+
 namespace QueueTopicComposer
 {
     public class ServiceBusConfiguration

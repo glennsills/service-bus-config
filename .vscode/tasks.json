@@ -9,7 +9,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/hackathon/sbConfiguration.csproj",
+                "${workspaceFolder}/ServiceBusConfig/ServiceBusConfig.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -21,7 +21,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/sbConfiguration.csproj",
+                "${workspaceFolder}/ServiceBusConfig/ServiceBusConfig.sln",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

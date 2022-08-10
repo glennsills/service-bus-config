@@ -1,17 +1,21 @@
 using System;
 using System.Threading.Tasks;
-
 using Azure.Messaging.ServiceBus;
 using Azure.Messaging.ServiceBus.Administration;
+using QueueTopicComposer.Model;
 
 namespace QueueTopicComposer
 {
     public class ServiceBusConfigurator
     {
         private readonly ServiceBusConfiguration _serviceBusConfig;
+
         private readonly ServiceBusAdministrationClient _adminClient;
 
-        public ServiceBusConfigurator(ServiceBusAdministrationClient adminClient, ServiceBusConfiguration serviceBusConfig)
+        public ServiceBusConfigurator(
+            ServiceBusAdministrationClient adminClient,
+            ServiceBusConfiguration serviceBusConfig
+        )
         {
             _serviceBusConfig = serviceBusConfig;
             _adminClient = adminClient;
@@ -38,19 +42,23 @@ namespace QueueTopicComposer
 
         internal async Task CreateTopicWithProperties(Topic topic)
         {
-            var createTopicOptions = new CreateTopicOptions(topic.Name)
-            {
-                DefaultMessageTimeToLive = TimeSpan.FromDays(topic.DaysUntilAutoDelete),
-                AutoDeleteOnIdle = TimeSpan.FromDays(topic.DaysUntilAutoDelete),
-                MaxSizeInMegabytes = topic.MaxSizeInMegabytes
-            };
+            var createTopicOptions =
+                new CreateTopicOptions(topic.Name)
+                {
+                    DefaultMessageTimeToLive = topic.DefaultMessageTimeToLive,
+                    AutoDeleteOnIdle = topic.AutoDeleteOnIdle,
+                    MaxSizeInMegabytes = topic.MaxSizeInMegabytes
+                };
             try
             {
                 await _adminClient.CreateTopicAsync(createTopicOptions);
             }
-            catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists)
+            catch (ServiceBusException ex)
+            when (
+            ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists
+            )
             {
-                //intentionally eat this exception which is almost certainly due to 
+                //intentionally eat this exception which is almost certainly due to
                 //a race condition where another process has created this topic first.
             }
         }
@@ -59,32 +67,46 @@ namespace QueueTopicComposer
         {
             foreach (var subscription in topic.Subscriptions)
             {
-                if (!await _adminClient.SubscriptionExistsAsync(topic.Name, subscription.Name))
+                if (
+                    !await _adminClient
+                        .SubscriptionExistsAsync(topic.Name, subscription.Name)
+                )
                 {
-                    var createRuleOptions = new CreateRuleOptions()
-                    {
-                        Name = subscription.DefaultRule.Name,
-                        Filter = new SqlRuleFilter(subscription.DefaultRule.Filter)
-                    };
+                    var createRuleOptions =
+                        new CreateRuleOptions()
+                        {
+                            Name = subscription.DefaultRule.Name,
+                            Filter =
+                                new SqlRuleFilter(subscription
+                                        .DefaultRule
+                                        .Filter)
+                        };
 
-                    var subscriptionOptions = new CreateSubscriptionOptions(topic.Name, subscription.Name)
-                    {
-                        DefaultMessageTimeToLive = TimeSpan.FromDays(subscription.DaysUntilAutoDelete),
-                        LockDuration = TimeSpan.FromSeconds(subscription.MessageLockDurationInSeconds),
-                        MaxDeliveryCount = subscription.MaxDeliveryCount,
-                        AutoDeleteOnIdle = TimeSpan.FromDays(subscription.DaysUntilAutoDelete),
-                        DeadLetteringOnMessageExpiration = subscription.DeadLetteringEnabled
-                    };
+                    var subscriptionOptions =
+                        new CreateSubscriptionOptions(topic.Name,
+                            subscription.Name)
+                        {
+                            DefaultMessageTimeToLive = subscription.AutoDeleteOnIdle,
+                            LockDuration = subscription.LockDuration,
+                            MaxDeliveryCount = subscription.MaxDeliveryCount,
+                            AutoDeleteOnIdle = subscription.AutoDeleteOnIdle,
+                            DeadLetteringOnMessageExpiration = subscription.DeadLetteringOnMessageExpiration
+                        };
                     try
                     {
-                        await _adminClient.CreateSubscriptionAsync(subscriptionOptions, createRuleOptions);
+                        await _adminClient
+                            .CreateSubscriptionAsync(subscriptionOptions,
+                            createRuleOptions);
                     }
-                    catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists)
+                    catch (ServiceBusException ex)
+                    when (
+                    ex.Reason ==
+                    ServiceBusFailureReason.MessagingEntityAlreadyExists
+                    )
                     {
-                        //intentionally eat this exception which is almost certainly due to 
+                        //intentionally eat this exception which is almost certainly due to
                         //a race condition where another process has created this topic first.
                     }
-
                 }
             }
         }
@@ -102,22 +124,26 @@ namespace QueueTopicComposer
 
         internal async Task CreateQueueWithOptions(Queue queue)
         {
-            var createQueueOptions = new CreateQueueOptions(queue.Name)
-            {
-                DefaultMessageTimeToLive = TimeSpan.FromDays(queue.DaysUntilAutoDelete),
-                LockDuration = TimeSpan.FromSeconds(queue.MessageLockDurationInSeconds),
-                MaxDeliveryCount = queue.MaxDeliveryCount,
-                AutoDeleteOnIdle = TimeSpan.FromDays(queue.DaysUntilAutoDelete),
-                DeadLetteringOnMessageExpiration = queue.DeadLetteringEnabled,
-                MaxSizeInMegabytes = queue.MaxSizeInMegabytes
-            };
+            var createQueueOptions =
+                new CreateQueueOptions(queue.Name)
+                {
+                    DefaultMessageTimeToLive = queue.DefaultMessageTimeToLive,
+                    LockDuration =queue.LockDuration,
+                    MaxDeliveryCount = queue.MaxDeliveryCount,
+                    AutoDeleteOnIdle = queue.AutoDeleteOnIdle,
+                    DeadLetteringOnMessageExpiration = queue.DeadLetteringOnMessageExpiration,
+                    MaxSizeInMegabytes = queue.MaxSizeInMegabytes
+                };
             try
             {
                 await _adminClient.CreateQueueAsync(createQueueOptions);
             }
-            catch (ServiceBusException ex) when (ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists)
+            catch (ServiceBusException ex)
+            when (
+            ex.Reason == ServiceBusFailureReason.MessagingEntityAlreadyExists
+            )
             {
-                //intentionally eat this exception which is almost certainly due to 
+                //intentionally eat this exception which is almost certainly due to
                 //a race condition where another process has reated this queue first.
             }
         }

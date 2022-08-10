@@ -1,15 +1,37 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+
 namespace QueueTopicComposer.Model
 {
     public class BaseQueueProperties
     {
-        public string Name { get; set; } = string.Empty;
-        public int MaxDeliveryCount { get; set; } = 1;
-        public int MessageTimeToLiveInDays { get; set; } = 365;
-        public int MessageLockDurationInSeconds { get; set; } = 15;
-        public int DaysUntilAutoDelete { get; set; } = 10;
-        public bool DeadLetteringEnabled { get; set; } = false;
-        public bool SessionsEnabled { get; set; } = false;
+		[Required]
+		[StringLength(260)]
+        [RegularExpression(@"^[^/][^@,?,#,*]{1,260}[^/]$")]
+		public string Name { get; set; } = string.Empty;
+
+		[Required]
+		[Range(typeof(TimeSpan), "0:0:5:0", "10675199.02:48:05.4775807")]
+		public TimeSpan AutoDeleteOnIdle {get;set;}
+        
+		[Range(1, int.MaxValue)]
+		public int MaxDeliveryCount { get; set; } = 10;
+        
+		public TimeSpan DefaultMessageTimeToLive { get; set; } = TimeSpan.MaxValue;
+        
+		[Range(typeof(TimeSpan), "0:0:0:20", "7:0:0:0")]
+		public TimeSpan DuplicateDetectionHistoryTimeWindow  { get; set; } = TimeSpan.FromMinutes(1);
+
+        public bool DeadLetteringOnMessageExpiration { get; set; } = false;
+        
+		[Range(typeof(TimeSpan), "0:0:1", "0:5:0")]
+		public TimeSpan LockDuration { get; set; } = TimeSpan.FromSeconds(60);
+
+		public bool RequiresSession { get; set; } = false;
+
         public bool MessageForwardingEnabled { get; set; } = false;
+
+		public string ForwardDeadLetteredMessagesTo  {get;set;}
 
     }
 }
