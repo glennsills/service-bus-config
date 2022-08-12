@@ -7,15 +7,14 @@ namespace QueueTopicComposer.Model
     {
 		[Required]
 		[StringLength(260)]
-        [RegularExpression(@"^[^/][^@,?,#,*]{1,260}[^/]$")]
+        [RegularExpression(@"^[^/]\^(@,?,#,\*){1,260}[^/]$")]
 		public string Name { get; set; } = string.Empty;
 
 		[Required]
 		[Range(typeof(TimeSpan), "0:0:5:0", "10675199.02:48:05.4775807")]
 		public TimeSpan AutoDeleteOnIdle {get;set;}
         
-		[Range(1, int.MaxValue)]
-		public int MaxDeliveryCount { get; set; } = 10;
+ 		public int MaxDeliveryCount { get; set; } = 10;
         
 		public TimeSpan DefaultMessageTimeToLive { get; set; } = TimeSpan.MaxValue;
         

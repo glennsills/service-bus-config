@@ -1,6 +1,6 @@
 using QueueTopicComposer.Model;
 
-namespace QueueTopicComposer
+namespace QueueTopicComposer.Model
 {
     public class Queue : BaseQueueProperties
     {
