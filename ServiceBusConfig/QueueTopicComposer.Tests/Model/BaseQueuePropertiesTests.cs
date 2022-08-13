@@ -37,7 +37,7 @@ public class BaseQueuePropertiesTests
 	public void NameWithIllegalCharactersIsDetected()
 	{
         var validationResults = new List<ValidationResult>();
-		var cut = new BaseQueueProperties{ Name = "SOMENAME#\\"};
+		var cut = new BaseQueueProperties{ Name = "SOMENAME#"};
 		var ctx = new ValidationContext(cut, null, null);
 		Validator.TryValidateObject(cut, ctx, validationResults, true);
 		Assert.Contains(validationResults, vr=> vr.MemberNames.Contains("Name"));
