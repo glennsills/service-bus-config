@@ -5,7 +5,13 @@ namespace QueueTopicComposer.Model.Validators
 {
 	public class QueueNameAttribute : ValidationAttribute
     {
-        private static Regex excludedCharacters = new Regex(@"(^/)|([@?#\\])|(/$)");
+        private static Regex excludedCharacters = new Regex(@"(^/)|([@?#\*])|(/$)");
+        
+        public QueueNameAttribute()
+        {
+            ErrorMessage = "Azure Queue names cannot begin or end with a '\' or contain any of the characters '@','?','#','*'";
+        }
+
         public override bool IsValid(object value )
         {
     
