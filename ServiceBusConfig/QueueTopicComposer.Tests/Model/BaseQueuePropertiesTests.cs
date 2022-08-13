@@ -33,13 +33,46 @@ public class BaseQueuePropertiesTests
 		Validator.TryValidateObject(cut, ctx, validationResults, true);
 		Assert.Contains(validationResults, vr=> vr.MemberNames.Contains("Name"));
 	}
+
 	[Fact]
 	public void NameWithIllegalCharactersIsDetected()
 	{
         var validationResults = new List<ValidationResult>();
-		var cut = new BaseQueueProperties{ Name = "SOMENAME#\\"};
+		var cut = new BaseQueueProperties{ Name = "SOMENAME!"};
 		var ctx = new ValidationContext(cut, null, null);
 		Validator.TryValidateObject(cut, ctx, validationResults, true);
 		Assert.Contains(validationResults, vr=> vr.MemberNames.Contains("Name"));
 	}
+
+	[Fact]
+	public void NameThatIsValidIsAccepted()
+	{
+        var validationResults = new List<ValidationResult>();
+		var cut = new BaseQueueProperties{ Name = "Goodname"};
+		var ctx = new ValidationContext(cut, null, null);
+		Validator.TryValidateObject(cut, ctx, validationResults, true);
+		Assert.DoesNotContain(validationResults, vr=> vr.MemberNames.Contains("Name"));
+	}
+
+
+	[Fact]
+	public void AutoDeleteOnIdleNotDefinedIsDetected()
+	{
+        var validationResults = new List<ValidationResult>();
+		var cut = new BaseQueueProperties{ Name = "GoodName"};
+		var ctx = new ValidationContext(cut, null, null);
+		Validator.TryValidateObject(cut, ctx, validationResults, true);
+		Assert.Contains(validationResults, vr=> vr.MemberNames.Contains("AutoDeleteOnIdle"));
+	}
+
+		[Fact]
+	public void AutoDeleteOnIdleToShorIsDetected()
+	{
+        var validationResults = new List<ValidationResult>();
+		var cut = new BaseQueueProperties{ Name = "GoodName", AutoDeleteOnIdle = TimeSpan.Parse("0:0:4:59")};
+		var ctx = new ValidationContext(cut, null, null);
+		Validator.TryValidateObject(cut, ctx, validationResults, true);
+		Assert.Contains(validationResults, vr=> vr.MemberNames.Contains("AutoDeleteOnIdle"));
+	}
+
 }
