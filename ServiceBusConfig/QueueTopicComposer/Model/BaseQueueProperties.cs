@@ -1,5 +1,6 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using QueueTopicComposer.Model.Validators;
 
 namespace QueueTopicComposer.Model
 {
@@ -7,9 +8,7 @@ namespace QueueTopicComposer.Model
     {
         [Required]
         [StringLength(260)]
-        //[RegularExpression(@"^[^/][a-zA-Z0-9]+[^/]$")]
-        [RegularExpression(@"^[^/][^\p{P}\p{Sm}]*[^/]$")]
-		[]
+        [QueueName]
         public string Name { get; set; } = string.Empty;
 
         [Required]
