@@ -5,32 +5,37 @@ namespace QueueTopicComposer.Model
 {
     public class BaseQueueProperties
     {
-		[Required]
-		[StringLength(260)]
-        [RegularExpression(@"^[^/]\^(@,?,#,\*){1,260}[^/]$")]
-		public string Name { get; set; } = string.Empty;
+        [Required]
+        [StringLength(260)]
+        //[RegularExpression(@"^[^/][a-zA-Z0-9]+[^/]$")]
+        [RegularExpression(@"^[^/][^\p{P}\p{Sm}]*[^/]$")]
+		[]
+        public string Name { get; set; } = string.Empty;
 
-		[Required]
-		[Range(typeof(TimeSpan), "0:0:5:0", "10675199.02:48:05.4775807")]
-		public TimeSpan AutoDeleteOnIdle {get;set;}
-        
- 		public int MaxDeliveryCount { get; set; } = 10;
-        
-		public TimeSpan DefaultMessageTimeToLive { get; set; } = TimeSpan.MaxValue;
-        
-		[Range(typeof(TimeSpan), "0:0:0:20", "7:0:0:0")]
-		public TimeSpan DuplicateDetectionHistoryTimeWindow  { get; set; } = TimeSpan.FromMinutes(1);
+        [Required]
+        [Range(typeof (TimeSpan), "0:0:5:0", "10675199.02:48:05.4775807")]
+        public TimeSpan AutoDeleteOnIdle { get; set; }
+
+        public int MaxDeliveryCount { get; set; } = 10;
+
+        public TimeSpan DefaultMessageTimeToLive
+        { get; set;
+        } = TimeSpan.MaxValue;
+
+        [Range(typeof (TimeSpan), "0:0:0:20", "7:0:0:0")]
+        public TimeSpan DuplicateDetectionHistoryTimeWindow
+        { get; set;
+        } = TimeSpan.FromMinutes(1);
 
         public bool DeadLetteringOnMessageExpiration { get; set; } = false;
-        
-		[Range(typeof(TimeSpan), "0:0:1", "0:5:0")]
-		public TimeSpan LockDuration { get; set; } = TimeSpan.FromSeconds(60);
 
-		public bool RequiresSession { get; set; } = false;
+        [Range(typeof (TimeSpan), "0:0:1", "0:5:0")]
+        public TimeSpan LockDuration { get; set; } = TimeSpan.FromSeconds(60);
+
+        public bool RequiresSession { get; set; } = false;
 
         public bool MessageForwardingEnabled { get; set; } = false;
 
-		public string ForwardDeadLetteredMessagesTo  {get;set;}
-
+        public string ForwardDeadLetteredMessagesTo { get; set; }
     }
 }
