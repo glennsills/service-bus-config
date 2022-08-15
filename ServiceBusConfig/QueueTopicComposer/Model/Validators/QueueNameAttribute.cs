@@ -14,7 +14,6 @@ namespace QueueTopicComposer.Model.Validators
 
         public override bool IsValid(object value )
         {
-    
             var stringValue = value as string;
             if (string.IsNullOrWhiteSpace(stringValue) || !excludedCharacters.IsMatch(stringValue))
             {
