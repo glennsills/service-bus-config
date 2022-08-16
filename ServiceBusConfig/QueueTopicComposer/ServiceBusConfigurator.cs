@@ -122,17 +122,27 @@ namespace QueueTopicComposer
             }
         }
 
-        internal async Task CreateQueueWithOptions(Queue queue)
+        internal async Task CreateQueueWithOptions(QueueSettings queueSettings)
         {
             var createQueueOptions =
-                new CreateQueueOptions(queue.Name)
+                new CreateQueueOptions(queueSettings.Name)
                 {
-                    DefaultMessageTimeToLive = queue.DefaultMessageTimeToLive,
-                    LockDuration =queue.LockDuration,
-                    MaxDeliveryCount = queue.MaxDeliveryCount,
-                    AutoDeleteOnIdle = queue.AutoDeleteOnIdle,
-                    DeadLetteringOnMessageExpiration = queue.DeadLetteringOnMessageExpiration,
-                    MaxSizeInMegabytes = queue.MaxSizeInMegabytes
+                    DefaultMessageTimeToLive = queueSettings.DefaultMessageTimeToLive,
+                    LockDuration =queueSettings.LockDuration,
+                    MaxDeliveryCount = queueSettings.MaxDeliveryCount,
+                    AutoDeleteOnIdle = queueSettings.AutoDeleteOnIdle,
+                    DeadLetteringOnMessageExpiration = queueSettings.DeadLetteringOnMessageExpiration,
+                    MaxSizeInMegabytes = queueSettings.MaxSizeInMegabytes,
+                    ForwardTo = queueSettings.ForwardTo,
+                    EnablePartitioning = queueSettings.EnablePartitioning,
+                    DuplicateDetectionHistoryTimeWindow = queueSettings.DuplicateDetectionHistoryTimeWindow,
+                    EnableBatchedOperations = queueSettings.EnableBatchedOperations,
+                    ForwardDeadLetteredMessagesTo = queueSettings.ForwardDeadLetteredMessagesTo,
+                    MaxMessageSizeInKilobytes = queueSettings.MaxMessageSizeInKilobytes,
+                    RequiresDuplicateDetection = queueSettings.RequiresDuplicateDetection,
+                    RequiresSession = queueSettings.RequiresDuplicateDetection,
+                    Status = queueSettings.Status,
+                    UserMetadata = queueSettings.UserMetadata       
                 };
             try
             {

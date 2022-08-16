@@ -54,18 +54,7 @@ public class BaseQueuePropertiesTests
 		Assert.DoesNotContain(validationResults, vr=> vr.MemberNames.Contains("Name"));
 	}
 
-
 	[Fact]
-	public void AutoDeleteOnIdleNotDefinedIsDetected()
-	{
-        var validationResults = new List<ValidationResult>();
-		var cut = new BaseQueueProperties{ Name = "GoodName"};
-		var ctx = new ValidationContext(cut, null, null);
-		Validator.TryValidateObject(cut, ctx, validationResults, true);
-		Assert.Contains(validationResults, vr=> vr.MemberNames.Contains("AutoDeleteOnIdle"));
-	}
-
-		[Fact]
 	public void AutoDeleteOnIdleToShorIsDetected()
 	{
         var validationResults = new List<ValidationResult>();

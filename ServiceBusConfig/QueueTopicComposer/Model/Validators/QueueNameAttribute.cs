@@ -11,7 +11,6 @@ namespace QueueTopicComposer.Model.Validators
         {
             ErrorMessage = "Azure Queue names cannot begin or end with a '\' or contain any of the characters '@','?','#','*'";
         }
-
         public override bool IsValid(object value )
         {
             var stringValue = value as string;
